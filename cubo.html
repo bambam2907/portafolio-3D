@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js OrbitControls - ES6</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #111; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/"
+    }
+}
+</script>
+
+<script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    importd
+
+    // 1. ESCENA
+    const escena = new THREE.Scene();
+
+    // 2. CÁMARA
+    // PerspectiveCamera(Campo de visión, Relación de aspecto, Near, Far)
+    const camara = new THREE.PerspectiveCamera(
+        75, 
+        window.innerWidth / window.innerHeight, 
+        0.1, 
+        1000
+    );
+    camara.position.set(3, 3, 5); // Posicionamos la cámara en el espacio
+
+    // 3. RENDERIZADOR
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio); // Para que se vea nítido en móviles
+    document.body.appendChild(renderer.domElement);
+
+    // 4. ORBIT CONTROLS
+    const controls = new OrbitControls(camara, renderer.domElement);
+    
+    // Propiedades comunes útiles:
+    controls.enableDamping = true;   // Añade inercia (suavizado)
+    controls.dampingFactor = 0.05;
+    controls.screenSpacePanning = false; // El paneo se mantiene en el plano horizontal
+    controls.minDistance = 2;        // Zoom mínimo
+    controls.maxDistance = 20;       // Zoom máximo
+    controls.maxPolarAngle = Math.PI / 2; // No permite bajar la cámara del nivel del "suelo"
+
+    // 5. UN OBJETO DE PRUEBA (Un cubo con bordes)
+    const geometria = new THREE.BoxGeometry(2, 2, 2);
+    const material = new THREE.MeshNormalMaterial();
+    const cubo = new THREE.Mesh(geometria, material);
+    escena.add(cubo);
+
+    // Añadimos una rejilla para orientarnos mejor al rotar
+    const gridHelper = new THREE.GridHelper(10, 10);
+    escena.add(gridHelper);
+
+    // 6. BUCLE DE ANIMACIÓN
+    function animate() {
+        requestAnimationFrame(animate);
+
+        // Actualizamos los controles en cada frame (obligatorio para el damping)
+        controls.update();
+
+        renderer.render(escena, camara);
+    }
+
+    // Manejo de cambio de tamaño de ventana
+    window.addEventListener('resize', () => {
+        camara.aspect = window.innerWidth / window.innerHeight;
+        camara.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    animate();
+</script>
+</body>
+</html>
