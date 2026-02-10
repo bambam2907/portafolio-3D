@@ -3,108 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cubo Rubik - Three.js</title>
+    <title>Portafolio | Home</title>
     <style>
-        body { margin: 0; overflow: hidden; background-color: #111; }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background-color: #0d1117; /* Fondo oscuro tipo GitHub */
+            color: #c9d1d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .main-card {
+            text-align: center;
+            background: #161b22;
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid #30363d;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #f0f6fc;
+            margin-bottom: 5px;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: #8b949e;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            display: block;
+            padding: 12px;
+            margin-bottom: 15px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-github {
+            background-color: #238636;
+            color: white;
+        }
+
+        .btn-github:hover {
+            background-color: #2ea043;
+            transform: translateY(-2px);
+        }
+
+        .btn-3d {
+            background-color: transparent;
+            color: #58a6ff;
+            border: 1px solid #58a6ff;
+        }
+
+        .btn-3d:hover {
+            background-color: rgba(88, 166, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #484f58;
+        }
     </style>
 </head>
 <body>
 
-<script type="importmap">
-    {
-        "imports": {
-            "three": "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js",
-            "orbit": "https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/controls/OrbitControls.js"
-        }
-    }
-</script>
-
-<script type="module">
-    import * as THREE from 'three';
-    import { OrbitControls } from 'orbit';
-
-    // 1. Configuración Básica
-    const escena = new THREE.Scene();
-    const camara = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camara.position.set(4, 4, 6);
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-
-    const controles = new OrbitControls(camara, renderer.domElement);
-    controles.enableDamping = true;
-
-    // 2. Definición de Colores (Estándar Rubik)
-    const colores = {
-        derecha: 0xB71234,   // Rojo
-        izquierda: 0xFF5800, // Naranja
-        arriba: 0xFFFFFF,    // Blanco
-        abajo: 0xFFD500,     // Amarillo
-        frente: 0x009B48,    // Verde
-        atras: 0x0046AD,     // Azul
-        interior: 0x000000   // Negro para las caras internas
-    };
-
-    // 3. Función para crear los materiales de un cubito
-    function crearMaterialesCubo() {
-        return [
-            new THREE.MeshBasicMaterial({ color: colores.derecha }),   // +X
-            new THREE.MeshBasicMaterial({ color: colores.izquierda }), // -X
-            new THREE.MeshBasicMaterial({ color: colores.arriba }),    // +Y
-            new THREE.MeshBasicMaterial({ color: colores.abajo }),     // -Y
-            new THREE.MeshBasicMaterial({ color: colores.frente }),    // +Z
-            new THREE.MeshBasicMaterial({ color: colores.atras })      // -Z
-        ];
-    }
-
-    // 4. Generar el Cubo 3x3x3
-    const tamañoCubito = 0.95; // Un poco menos de 1 para dejar espacio entre piezas
-    const geometria = new THREE.BoxGeometry(tamañoCubito, tamañoCubito, tamañoCubito);
-    const grupoRubik = new THREE.Group();
-
-    for (let x = -1; x <= 1; x++) {
-        for (let y = -1; y <= 1; y++) {
-            for (let z = -1; z <= 1; z++) {
-                // Si es el centro absoluto (0,0,0), podrías omitirlo, pero lo dejaremos
-                const materiales = crearMaterialesCubo();
-                const cubito = new THREE.Mesh(geometria, materiales);
-                
-                // Posicionar cada cubito en la grilla
-                cubito.position.set(x, y, z);
-                
-                // Añadir un borde negro a cada cubito para que se vea mejor
-                const bordes = new THREE.EdgesGeometry(geometria);
-                const lineaBorde = new THREE.LineSegments(bordes, new THREE.LineBasicMaterial({ color: 0x000000 }));
-                cubito.add(lineaBorde);
-
-                grupoRubik.add(cubito);
-            }
-        }
-    }
-
-    escena.add(grupoRubik);
-
-    // 5. Animación y Renderizado
-    const animar = () => {
-        requestAnimationFrame(animar);
+    <div class="main-card">
+        <h1>Mi Portafolio</h1>
+        <p class="subtitle">Ingeniería en Computación</p>
         
-        // Rotación ligera para que se vea dinámico
-        grupoRubik.rotation.y += 0.002;
-        
-        controles.update();
-        renderer.render(escena, camara);
-    };
+        <a href="https://github.com/bambam2907" class="btn btn-github" target="_blank">
+            Ir a mi GitHub
+        </a>
 
-    animar();
+        <a href="https://bambam2907.github.io/portafolio-3D/" class="btn btn-3d">
+            Ver Portfolio 3D
+        </a>
 
-    // Redimensionado
-    window.addEventListener('resize', () => {
-        camara.aspect = window.innerWidth / window.innerHeight;
-        camara.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-</script>
+        <footer>
+            &copy; 2026 | Desarrollado con código limpio
+        </footer>
+    </div>
 
 </body>
 </html>
